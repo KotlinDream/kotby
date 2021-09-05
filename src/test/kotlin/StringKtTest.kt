@@ -5,7 +5,7 @@ import io.kotest.matchers.shouldBe
 class StringKtTest : DescribeSpec({
 
     describe("camelize") {
-        it("当只有一个单词的时候能正确的把首个字母大写") {
+        it("当只有一个1单词的时候能正确的把首个字母大写") {
             "aBc".camelize() shouldBe "Abc"
         }
 

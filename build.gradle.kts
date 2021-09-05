@@ -12,15 +12,18 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
 
-    testImplementation("io.kotest:kotest-runner-junit5:${properties["kotestVersion"]}")
-    testImplementation("io.kotest:kotest-assertions-core:${properties["kotestVersion"]}")
-    testImplementation("io.kotest:kotest-property:${properties["kotestVersion"]}")
+    testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
+    testImplementation("io.kotest:kotest-assertions-core:4.6.1")
+    testImplementation("io.kotest:kotest-property:4.6.1")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "16"
 }
 
 tasks.jacocoTestReport {

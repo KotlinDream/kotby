@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.5.30"
     id("org.sonarqube") version "3.3"
+    jacoco
 }
 
 group = "info.dreamcoder"
@@ -20,6 +21,13 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(true)
+    }
 }
 
 sonarqube {

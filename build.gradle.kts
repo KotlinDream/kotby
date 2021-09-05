@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.5.30"
+    id("org.sonarqube") version "3.3"
 }
 
 group = "info.dreamcoder"
@@ -19,4 +20,12 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "KotlinDream_kotby")
+        property("sonar.organization", "kotlin-dream")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }

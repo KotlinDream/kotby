@@ -10,7 +10,7 @@ class StringKtTest : DescribeSpec({
         }
 
         it("当有多个单词的时候，能去掉中间的下划线，并且每个单词的首字母大写") {
-            "abc_edf".camelize() shouldBe "AbcEdf"
+            "abc_eDf".camelize() shouldBe "AbcEdf"
         }
     }
 })

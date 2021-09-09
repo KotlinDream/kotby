@@ -2,8 +2,8 @@ plugins {
     kotlin("jvm") version "1.5.30"
     id("org.sonarqube") version "3.3"
     jacoco
-    `java-library`
     `maven-publish`
+    signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
@@ -36,6 +36,10 @@ tasks.jacocoTestReport {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 sonarqube {
     properties {
@@ -47,9 +51,40 @@ sonarqube {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("mavenKotlin") {
             from(components["java"])
+            pom {
+                name.set("Kotby")
+                description.set("A kotlin library same as ruby")
+                url.set("https://github.com/KotlinDream/kotby")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("jimxl")
+                        name.set("jimxl")
+                        email.set("tianxiaxl@gmail.com")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/KotlinDream/kotby")
+                }
+            }
         }
+    }
+}
+
+//signing {
+//    sign(publishing.publications["mavenKotlin"])
+//}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
 

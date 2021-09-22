@@ -9,3 +9,5 @@ fun String.camelize() : String {
 fun String.formatSql() : String {
     return SqlFormatter.format(this)
 }
+
+

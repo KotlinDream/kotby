@@ -1,10 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.5.30"
+    kotlin("jvm") version "1.5.31"
     id("org.sonarqube") version "3.3"
     jacoco
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("java-gradle-plugin")
 }
 
 group = "info.dreamcoder"
@@ -15,8 +16,12 @@ repositories {
 }
 
 dependencies {
+    implementation(gradleApi())
     implementation("com.github.vertical-blank:sql-formatter:2.0.2")
     implementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    implementation("io.github.microutils:kotlin-logging:2.0.11")
+
+    testImplementation("org.amshove.kluent:kluent:1.68")
 }
 
 tasks.test {
@@ -44,6 +49,15 @@ sonarqube {
         property("sonar.projectKey", "KotlinDream_kotby")
         property("sonar.organization", "kotlin-dream")
         property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
+
+gradlePlugin {
+    plugins {
+        create("migrationPlugin") {
+            id = "info.dreamcoder.devtools"
+            implementationClass = "gradle.plugins.DevTools"
+        }
     }
 }
 

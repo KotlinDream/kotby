@@ -18,8 +18,11 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation("com.github.vertical-blank:sql-formatter:2.0.2")
-    implementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.0")
     implementation("io.github.microutils:kotlin-logging:2.0.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
+    implementation("org.jline:jline:3.20.0")
+    implementation("com.lordcodes.turtle:turtle:0.5.0")
 
     testImplementation("org.amshove.kluent:kluent:1.68")
 }

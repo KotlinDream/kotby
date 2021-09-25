@@ -1,6 +1,13 @@
 package gradle.tasks
 
-import FileWatcher
+import gradle.tasks.guard.Console
+import gradle.tasks.guard.ProjectFileWatcher
+import gradle.tasks.guard.TestRunner
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.launch
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
@@ -9,25 +16,11 @@ open class GuardTask : DefaultTask(){
 
     @TaskAction
     fun run() {
-        FileWatcher(project.projectDir.path).apply {
-            onFileCreate { fileCreateEvent(it) }
-            onFileModify { fileModifyEvent(it) }
-            onFileDelete { fileDeleteEvent(it) }
-        }.create()
-    }
+        val channel = Channel<String>(UNLIMITED)
+//        GlobalScope.launch {
+//            ProjectFileWatcher(project, channel).run()
+//        }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun fileCreateEvent(file: String) {
-
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun fileModifyEvent(file: String) {
-
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun fileDeleteEvent(file: String) {
-
+        Console(project, channel).start()
     }
 }

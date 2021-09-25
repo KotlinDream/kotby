@@ -2,7 +2,6 @@ import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
-import kotlin.io.path.isRegularFile
 
 class FileWatcher(private val watchPath: String) {
 
@@ -69,7 +68,7 @@ class FileWatcher(private val watchPath: String) {
         }
     }
 
-    // TODO: 2021/9/22 把执行放到后台线程，是的主程序还可以添加键盘的监听事件
+    // TODO: 2021/9/22 把执行放到后台线程，使得主程序还可以添加键盘的监听事件
     private fun processWatch() {
         while(true) {
             val key = watcher.take()

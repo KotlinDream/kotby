@@ -1,3 +1,4 @@
+import gradle.utils.Logger.Companion.puts
 import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
@@ -79,8 +80,12 @@ class FileWatcher(private val watchPath: String) {
     }
 
     fun create() {
-        registerSelfAndAllSubDir()
-        processWatch()
+        if(File(watchPath).exists()) {
+            registerSelfAndAllSubDir()
+            processWatch()
+        } else {
+            puts("> 监控的目录 [$watchPath] 不存在")
+        }
     }
 
 }

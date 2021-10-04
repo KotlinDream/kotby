@@ -17,9 +17,13 @@ open class GuardTask : DefaultTask(){
     @TaskAction
     fun run() {
         val channel = Channel<String>(UNLIMITED)
-//        GlobalScope.launch {
-//            ProjectFileWatcher(project, channel).run()
-//        }
+
+        GlobalScope.launch {
+            ProjectFileWatcher(project, channel).run()
+            project.subprojects.forEach{
+                ProjectFileWatcher(it, channel).run()
+            }
+        }
 
         Console(project, channel).start()
     }

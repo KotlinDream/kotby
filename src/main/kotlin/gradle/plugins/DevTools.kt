@@ -2,8 +2,6 @@ package gradle.plugins
 
 import com.adarshr.gradle.testlogger.TestLoggerExtension
 import gradle.tasks.GuardTask
-import gradle.utils.Logger
-import gradle.utils.Logger.Companion.puts
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel

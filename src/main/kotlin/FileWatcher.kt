@@ -1,4 +1,3 @@
-import gradle.utils.Logger.Companion.puts
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -90,7 +89,7 @@ class FileWatcher(private val watchPath: String) {
                 processWatch()
             }
         } else {
-            puts("监控的目录 [$watchPath] 不存在")
+            logger.info { "监控的目录 [$watchPath] 不存在" }
         }
     }
 

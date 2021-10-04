@@ -13,6 +13,9 @@ version = "0.1"
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
 }
 
 dependencies {
@@ -23,6 +26,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
     implementation("org.jline:jline:3.20.0")
     implementation("com.lordcodes.turtle:turtle:0.5.0")
+    implementation("com.github.ajalt.mordant:mordant:2.0.0-beta2")
+    implementation("com.adarshr:gradle-test-logger-plugin:3.0.0")
 
     testImplementation("org.amshove.kluent:kluent:1.68")
 }

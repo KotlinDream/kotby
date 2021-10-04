@@ -18,10 +18,9 @@ class ProjectFileWatcher(private val project: Project, private val channel: Chan
         onFileModify { fileModifyEvent(it) }
     }
 
-    suspend fun run() {
-        withContext(Dispatchers.IO) {
-            fileWatcher.create()
-        }
+    fun run() {
+        puts("开始监听项目 [${project.name}] ")
+        fileWatcher.create()
     }
 
     private fun fileModifyEvent(filePath: String) {

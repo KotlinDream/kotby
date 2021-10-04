@@ -8,21 +8,23 @@ import org.gradle.tooling.GradleConnector
 class TestRunner(private val project: Project) {
 
     private val logger  = KotlinLogging.logger {}
+    private val connection = GradleConnector.newConnector().forProjectDirectory(project.projectDir).connect()
 
     fun runAllTest() {
         runTest("*")
     }
 
     fun runTest(className: String) {
-        puts("> 运行项目 [${project.name}] 类 [$className] 的测试")
-        val connection = GradleConnector.newConnector().forProjectDirectory(project.projectDir).connect()
+        puts("运行项目 [${project.name}] 类 [$className] 的测试 [${project.projectDir.absolutePath}]")
 
         try {
-            connection.newTestLauncher().withJvmTestClasses(className).setStandardOutput(System.out).run()
+            connection.newTestLauncher()
+                .withJvmTestClasses(className)
+                .setStandardOutput(System.out)
+                .withArguments("-q")
+                .run()
         } catch (e: Exception) {
             logger.info { e.printStackTrace() }
         }
-
-        connection.close()
     }
 }

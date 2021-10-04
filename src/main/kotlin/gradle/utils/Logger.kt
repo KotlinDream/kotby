@@ -1,13 +1,15 @@
 package gradle.utils
 
-import mu.KotlinLogging
+import com.github.ajalt.mordant.rendering.AnsiLevel
+import com.github.ajalt.mordant.rendering.TextColors.*
+import com.github.ajalt.mordant.terminal.Terminal
 
 class Logger {
     companion object {
-        private val logger = KotlinLogging.logger {}
+        private val t = Terminal(AnsiLevel.TRUECOLOR)
 
         fun puts(message: String) {
-            println(message)
+            t.println("> ${green("Kotby")} $message")
         }
     }
 }

@@ -1,4 +1,6 @@
 import gradle.utils.Logger.Companion.puts
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
@@ -27,7 +29,7 @@ class FileWatcher(private val watchPath: String) {
 
 
     private fun registerWatcher(dir: String) {
-        logger.info{ "Start watch path [$dir]" }
+        logger.info { "开始监听目录 [$dir]" }
         Paths.get(dir)
              .toAbsolutePath()
              .register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE)
@@ -50,17 +52,17 @@ class FileWatcher(private val watchPath: String) {
         val kind = event.kind()
         val file = parentPath.resolve(event.context().toString())
 
-        logger.info { """
-            *********************************
-            event:          [${event.kind()}]
-            event.context() [${event.context()}]
-            parentPath:     [$parentPath]
-            filePath:       [${file.absolutePath}]
-            isFile?:        [${file.isFile}]
-            *********************************
-        """.trimIndent() }
-
         if(file.isFile) {
+            logger.info {"""
+                *********************************
+                event:          [${event.kind()}]
+                event.context() [${event.context()}]
+                parentPath:     [$parentPath]
+                filePath:       [${file.absolutePath}]
+                isFile?:        [${file.isFile}]
+                *********************************
+            """.trimIndent()}
+
             when(kind) {
                 ENTRY_CREATE -> fileCreateAction?.invoke(file.absolutePath)
                 ENTRY_MODIFY -> fileUpdateAction?.invoke(file.absolutePath)
@@ -82,9 +84,11 @@ class FileWatcher(private val watchPath: String) {
     fun create() {
         if(File(watchPath).exists()) {
             registerSelfAndAllSubDir()
-            processWatch()
+            GlobalScope.launch {
+                processWatch()
+            }
         } else {
-            puts("> 监控的目录 [$watchPath] 不存在")
+            puts("监控的目录 [$watchPath] 不存在")
         }
     }
 

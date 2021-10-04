@@ -7,7 +7,7 @@ class ClassFileConversion {
         fun fullClassNameByFile(filePath: String): String {
             val dirs = filePath.split("/")
             val className = File(filePath).nameWithoutExtension.let {
-                if(it.contains("test")) it else "$it*Test"
+                if(it.contains("Test")) it else "$it*Test"
             }
             val srcIndex = dirs.lastIndexOf("src")
 

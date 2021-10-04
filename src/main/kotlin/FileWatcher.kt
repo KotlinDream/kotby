@@ -1,6 +1,3 @@
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
@@ -81,13 +78,10 @@ class FileWatcher(private val watchPath: String) {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun create() {
         if(File(watchPath).exists()) {
             registerSelfAndAllSubDir()
-            GlobalScope.launch {
-                processWatch()
-            }
+            processWatch()
         } else {
             logger.info { "监控的目录 [$watchPath] 不存在" }
         }

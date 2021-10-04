@@ -18,7 +18,6 @@ dependencies {
     implementation("com.github.vertical-blank:sql-formatter:2.0.2")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation("io.github.microutils:kotlin-logging:2.0.11")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
 
 
     testImplementation("org.amshove.kluent:kluent:1.68")

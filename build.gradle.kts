@@ -98,8 +98,10 @@ publishing {
     }
 }
 
-signing {
-    sign(publishing.publications["mavenKotlin"])
+if(System.getenv("JITPACK") != "true") {
+    signing {
+        sign(publishing.publications["mavenKotlin"])
+    }
 }
 
 tasks.javadoc {

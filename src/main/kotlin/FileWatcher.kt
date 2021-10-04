@@ -1,4 +1,5 @@
 import gradle.utils.Logger.Companion.puts
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
@@ -81,6 +82,7 @@ class FileWatcher(private val watchPath: String) {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun create() {
         if(File(watchPath).exists()) {
             registerSelfAndAllSubDir()

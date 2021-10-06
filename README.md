@@ -4,6 +4,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=KotlinDream_kotby&metric=alert_status)](https://sonarcloud.io/dashboard?id=KotlinDream_kotby)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=KotlinDream_kotby&metric=code_smells)](https://sonarcloud.io/dashboard?id=KotlinDream_kotby)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=KotlinDream_kotby&metric=coverage)](https://sonarcloud.io/dashboard?id=KotlinDream_kotby)
+[![jitpack](https://jitpack.io/v/info.dreamcoder/kotby.svg)](https://jitpack.io/#info.dreamcoder/kotby)
+
 
 
 ## 背景

@@ -41,7 +41,7 @@ class FileWatcher(private val watchPath: String) {
     }
 
     private fun registerSelfAndAllSubDir() {
-        registerWatcher(watchPath)
+//        registerWatcher(watchPath)
         registerAllSubDir(watchPath)
     }
 
@@ -68,7 +68,6 @@ class FileWatcher(private val watchPath: String) {
         }
     }
 
-    // TODO: 2021/9/22 把执行放到后台线程，使得主程序还可以添加键盘的监听事件
     private fun processWatch() {
         while(true) {
             val key = watcher.take()

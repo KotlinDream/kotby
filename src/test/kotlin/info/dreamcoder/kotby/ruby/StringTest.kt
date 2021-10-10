@@ -1,4 +1,4 @@
-package ruby
+package info.dreamcoder.kotby.ruby
 
 import camelize
 import org.junit.jupiter.api.Test

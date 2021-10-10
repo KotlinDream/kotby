@@ -1,10 +1,13 @@
+package info.dreamcoder.kotby.io
+
 import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
 import java.nio.file.StandardWatchEventKinds.*
 
-class FileWatcher(private val watchPath: String) {
+class FileWatcher(vararg watchPaths: String) {
 
+    private val watchPaths = watchPaths
     private val logger  = KotlinLogging.logger {}
     private val watcher = FileSystems.getDefault().newWatchService()
 
@@ -41,8 +44,13 @@ class FileWatcher(private val watchPath: String) {
     }
 
     private fun registerSelfAndAllSubDir() {
-//        registerWatcher(watchPath)
-        registerAllSubDir(watchPath)
+        watchPaths.forEach {
+            if(File(it).isDirectory) {
+                registerAllSubDir(it)
+            } else {
+                logger.info { "监控的目录 [$it] 不存在" }
+            }
+        }
     }
 
     private fun handleFileEvent(event: WatchEvent<*>, parentPath: File) {
@@ -50,6 +58,7 @@ class FileWatcher(private val watchPath: String) {
         val file = parentPath.resolve(event.context().toString())
 
         if(file.isFile) {
+
             logger.info {"""
                 *********************************
                 event:          [${event.kind()}]
@@ -60,11 +69,16 @@ class FileWatcher(private val watchPath: String) {
                 *********************************
             """.trimIndent()}
 
-            when(kind) {
-                ENTRY_CREATE -> fileCreateAction?.invoke(file.absolutePath)
-                ENTRY_MODIFY -> fileUpdateAction?.invoke(file.absolutePath)
-                ENTRY_DELETE -> fileDeleteAction?.invoke(file.absolutePath)
+            if(FileContentWatcher.isChange(file.absolutePath)) {
+                when(kind) {
+                    ENTRY_CREATE -> fileCreateAction?.invoke(file.absolutePath)
+                    ENTRY_MODIFY -> fileUpdateAction?.invoke(file.absolutePath)
+                    ENTRY_DELETE -> fileDeleteAction?.invoke(file.absolutePath)
+                }
+            } else {
+                logger.info { "[${file.path}] 文件内容没有变动" }
             }
+
         }
     }
 
@@ -78,12 +92,8 @@ class FileWatcher(private val watchPath: String) {
     }
 
     fun create() {
-        if(File(watchPath).exists()) {
-            registerSelfAndAllSubDir()
-            processWatch()
-        } else {
-            logger.info { "监控的目录 [$watchPath] 不存在" }
-        }
+        registerSelfAndAllSubDir()
+        processWatch()
     }
 
 }

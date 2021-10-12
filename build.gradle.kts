@@ -19,7 +19,7 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")
     implementation("io.github.microutils:kotlin-logging:2.0.11")
 
-
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
     testImplementation("org.amshove.kluent:kluent:1.68")
 }
 

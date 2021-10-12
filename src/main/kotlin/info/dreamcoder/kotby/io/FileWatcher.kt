@@ -1,5 +1,6 @@
 package info.dreamcoder.kotby.io
 
+import com.sun.nio.file.SensitivityWatchEventModifier
 import mu.KotlinLogging
 import java.io.File
 import java.nio.file.*
@@ -31,8 +32,8 @@ class FileWatcher(vararg watchPaths: String) {
     private fun registerWatcher(dir: String) {
         logger.info { "开始监听目录 [$dir]" }
         Paths.get(dir)
-             .toAbsolutePath()
-             .register(watcher, ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE)
+            .toAbsolutePath()
+            .register(watcher, listOf(ENTRY_CREATE, ENTRY_MODIFY, ENTRY_DELETE).toTypedArray(), SensitivityWatchEventModifier.HIGH)
     }
 
     private fun registerAllSubDir(dir: String) {
@@ -57,9 +58,7 @@ class FileWatcher(vararg watchPaths: String) {
         val kind = event.kind()
         val file = parentPath.resolve(event.context().toString())
 
-        if(file.isFile) {
-
-            logger.info {"""
+        logger.info {"""
                 *********************************
                 event:          [${event.kind()}]
                 event.context() [${event.context()}]
@@ -69,16 +68,16 @@ class FileWatcher(vararg watchPaths: String) {
                 *********************************
             """.trimIndent()}
 
-            if(FileContentWatcher.isChange(file.absolutePath)) {
-                when(kind) {
-                    ENTRY_CREATE -> fileCreateAction?.invoke(file.absolutePath)
-                    ENTRY_MODIFY -> fileUpdateAction?.invoke(file.absolutePath)
-                    ENTRY_DELETE -> fileDeleteAction?.invoke(file.absolutePath)
+        when(kind) {
+            ENTRY_CREATE -> fileCreateAction?.invoke(file.absolutePath)
+            ENTRY_MODIFY -> {
+                if(file.isFile && FileContentWatcher.isChange(file.absolutePath)) {
+                    fileUpdateAction?.invoke(file.absolutePath)
+                } else {
+                    logger.info { "[${file.path}] 文件内容没有变动" }
                 }
-            } else {
-                logger.info { "[${file.path}] 文件内容没有变动" }
             }
-
+            ENTRY_DELETE -> fileDeleteAction?.invoke(file.absolutePath)
         }
     }
 
@@ -89,6 +88,10 @@ class FileWatcher(vararg watchPaths: String) {
             key.pollEvents().forEach { handleFileEvent(it, dir) }
             key.reset()
         }
+    }
+
+    fun close() {
+        watcher.close()
     }
 
     fun create() {

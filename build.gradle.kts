@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("org.barfuin.gradle.jacocolog") version "2.0.0"
 }
 
 group = "info.dreamcoder"
